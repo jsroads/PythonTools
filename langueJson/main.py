@@ -12,6 +12,8 @@ import xlrd
 
 importlib.reload(sys)
 ext_name = ['xls', 'xlsx']
+
+
 # 读取excel数据
 def open_excel(path):
     try:
@@ -67,7 +69,7 @@ def process_type_row(fieldNames, fieldTypes, row):
     return data
 
 
-def merge_JsonFiles(filename,outfileName):
+def merge_JsonFiles(filename, outfileName):
     result = {}
     for f1 in filename:
         with open(f1, 'r') as infile:
@@ -75,7 +77,7 @@ def merge_JsonFiles(filename,outfileName):
             for key in dJson:
                 result[key] = dJson[key]
     if os.path.exists(outfileName):
-        print(os.path.dirname(outfileName),"路径已经存在")
+        print(os.path.dirname(outfileName), "路径已经存在")
     else:
         dir = os.path.dirname(outfileName)
         os.mkdir(dir)
@@ -144,10 +146,14 @@ if __name__ == "__main__":
             key_str_list = [key_str]
         data_c = process_excel_table(source, key_str_list, 0, ["cs", "sc", "c"])
         if data_c["status"]:
-            jsondir = json_path.split("/")[1]
+            jsondir = os.path.basename(json_path)
             outPutJsonList.append(os.path.join(cwd, "spec", jsondir))
             revert_to_json(data_c["data"], jsondir, "spec")
-    merge_JsonFiles(outPutJsonList,outfileName)
+    merge_JsonFiles(outPutJsonList, outfileName)
     print("转换成功！！")
-    shutil.copyfile(outfileName, os.path.join(targetOurDir,outfileName))
+    fileName = os.path.basename(outfileName)
+    targetOutPath = os.path.join(targetOurDir, fileName)
+    if not os.path.exists(targetOurDir):
+        os.mkdir(targetOurDir)
+    shutil.copyfile(outfileName, targetOutPath)
     print("拷贝成功！！")
