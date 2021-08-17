@@ -1,0 +1,8 @@
+{
+  "specList": [
+    "data/test1(文字表.xlsx",
+    "data/test2(UI界面.xlsx"
+  ],
+  "outfileName": "output/result.json",
+  "targetOurDir": "/Users/smile/work/temp"
+}
